@@ -25,7 +25,6 @@ const BottomTapNav = () => {
         },
         headerTitleAlign: "center",
         tabBarActiveTintColor: Colors.invertedPrimary,
-        unmountOnBlur: true,
       }}
     >
       <BottomTap.Screen
@@ -35,6 +34,7 @@ const BottomTapNav = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
+          unmountOnBlur: true,
         }}
       />
       <BottomTap.Screen

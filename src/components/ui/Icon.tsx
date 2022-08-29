@@ -6,15 +6,11 @@ interface Props {
   icon: keyof typeof Ionicons.glyphMap;
   size: number;
   color: string;
-  onPress?: () => {};
 }
 
-const IconButton: React.FC<Props> = ({ icon, size, color, onPress }) => {
+const Icon: React.FC<Props> = ({ icon, size, color }) => {
   return (
-    <Pressable
-      style={({ pressed }) => pressed && styles.pressed}
-      onPress={() => onPress && onPress()}
-    >
+    <Pressable style={({ pressed }) => pressed && styles.pressed}>
       <View style={styles.buttonContainer}>
         <Ionicons name={icon} size={size} color={color} />
       </View>
@@ -22,7 +18,7 @@ const IconButton: React.FC<Props> = ({ icon, size, color, onPress }) => {
   );
 };
 
-export default IconButton;
+export default Icon;
 
 const styles = StyleSheet.create({
   buttonContainer: {
