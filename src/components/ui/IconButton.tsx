@@ -6,7 +6,7 @@ interface Props {
   icon: keyof typeof Ionicons.glyphMap;
   size: number;
   color: string;
-  onPress?: () => {};
+  onPress: () => void;
 }
 
 const IconButton: React.FC<Props> = ({ icon, size, color, onPress }) => {

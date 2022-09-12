@@ -1,28 +1,40 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Colors } from "../../theme/color";
 import CircleChart from "../../components/CircleChart/CircleChart";
 import { useIsFocused } from "@react-navigation/native";
-import BottomModal from "../../components/BottomModal/BottomModal";
+import BottomModal from "../../components/BottomSheet/BottomSheet";
+import { DeviceDataContext } from "../../context/DeviceDataContext";
 
 const DeviceDetail = () => {
+  const deviceDataCtx = useContext(DeviceDataContext);
   const [data, setData] = useState([
     {
       name: "humidity",
-      percentage: 60,
+      percentage: deviceDataCtx.humidity,
       color: Colors.warning,
     },
     {
       name: "°C",
-      percentage: 20,
+      percentage: deviceDataCtx.temperatureC,
       color: Colors.ideal,
     },
-    {
-      name: "Danger",
-      percentage: 100,
-      color: Colors.danger,
-    },
   ]);
+
+  useEffect(() => {
+    setData([
+      {
+        name: "humidity",
+        percentage: deviceDataCtx.humidity,
+        color: Colors.ideal,
+      },
+      {
+        name: "°C",
+        percentage: deviceDataCtx.temperatureC,
+        color: Colors.ideal,
+      },
+    ]);
+  }, [deviceDataCtx]);
 
   return (
     <>

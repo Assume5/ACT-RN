@@ -15,7 +15,7 @@ export default function Screens() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="ExpensesOverview"
+            name="overview"
             component={BottomTapNav}
             options={{
               headerShown: false,
@@ -26,10 +26,3 @@ export default function Screens() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.primaryBg,
-  },
-});

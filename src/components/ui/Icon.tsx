@@ -10,11 +10,9 @@ interface Props {
 
 const Icon: React.FC<Props> = ({ icon, size, color }) => {
   return (
-    <Pressable style={({ pressed }) => pressed && styles.pressed}>
-      <View style={styles.buttonContainer}>
-        <Ionicons name={icon} size={size} color={color} />
-      </View>
-    </Pressable>
+    <View style={styles.buttonContainer}>
+      <Ionicons name={icon} size={size} color={color} />
+    </View>
   );
 };
 

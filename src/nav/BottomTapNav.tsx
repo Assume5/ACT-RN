@@ -3,8 +3,11 @@ import { Colors } from "../theme/color";
 import DeviceDetail from "../screens/DeviceDetail/DeviceDetail";
 import { Ionicons } from "@expo/vector-icons";
 import PastDetails from "../screens/PastDetails/PastDetails";
-import SearchDevices from "../screens/SearchDevices/SearchDevices";
+import SearchDevices from "../components/SearchDevices/SearchDevices";
 import TopBarTapNav from "./TopBarTapNav";
+import Account from "../screens/Account/Account";
+import Devices from "../screens/Devices/Devices";
+import IconButton from "../components/ui/IconButton";
 const BottomTap = createBottomTabNavigator();
 
 const BottomTapNav = () => {
@@ -25,21 +28,21 @@ const BottomTapNav = () => {
         },
         headerTitleAlign: "center",
         tabBarActiveTintColor: Colors.invertedPrimary,
+        unmountOnBlur: true,
       }}
     >
       <BottomTap.Screen
-        name="Home"
-        component={TopBarTapNav}
+        name="Devices"
+        component={Devices}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
-          unmountOnBlur: true,
         }}
       />
       <BottomTap.Screen
         name="Account"
-        component={PastDetails}
+        component={Account}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-circle" size={size} color={color} />
