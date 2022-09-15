@@ -1,6 +1,7 @@
-import { BleManager, Device } from "react-native-ble-plx";
+import { BleError, BleManager, Device } from "react-native-ble-plx";
 import { IDeviceCtx } from "../types/Device";
 import { Buffer } from "buffer";
+import { Alert } from "react-native";
 
 export const connectDevice = async (device: Device, deviceCtx: IDeviceCtx) => {
   try {
@@ -26,71 +27,75 @@ export const connectDevice = async (device: Device, deviceCtx: IDeviceCtx) => {
     for (const i of services) {
       const char = await i.characteristics();
       for (const j of char) {
-        console.log(j.serviceUUID);
         if (j.isWritableWithResponse || j.isWritableWithoutResponse) {
           isWriteable = true;
           writeUUID = j.uuid;
           writeServiceUUID = j.serviceUUID;
-          console.log("isWritableWithResponse:", j.serviceUUID, j.uuid);
         }
 
         if (j.isReadable) {
           isReadable = true;
           readUUID = j.uuid;
           readServiceUUID = j.serviceUUID;
-          console.log("isReadable:", j.serviceUUID, j.uuid);
         }
 
         if (j.isNotifiable) {
           isNotifiable = true;
           notifyUUID = j.uuid;
           notifyServiceUUID = j.serviceUUID;
-          console.log("isNotifiable:", j.serviceUUID, j.uuid);
         }
       }
     }
-    console.log(
-      device.name,
+
+    deviceCtx.connect(
+      connected,
       await device.isConnected(),
-      isNotifiable,
-      isReadable,
       isWriteable,
       writeUUID,
       writeServiceUUID,
+      isReadable,
       readUUID,
       readServiceUUID,
+      isNotifiable,
       notifyUUID,
       notifyServiceUUID
     );
 
-    deviceCtx.connect(
-      device,
-      await device.isConnected(),
-      isWriteable,
-      writeUUID,
-      writeServiceUUID,
-      isReadable,
-      readUUID,
-      readServiceUUID,
-      isNotifiable,
-      notifyUUID,
-      notifyServiceUUID
-    );
-  } catch (error) {
+    return { connected: true };
+  } catch (error: any) {
     console.log(`Error connecting to device ${device.name}: ${error}`);
-    deviceCtx.connect(
-      device,
-      false,
-      false,
-      null,
-      null,
-      false,
-      null,
-      null,
-      false,
-      null,
-      null
-    );
+
+    if (error.errorCode !== 203) {
+      deviceCtx.connect(
+        device,
+        false,
+        false,
+        null,
+        null,
+        false,
+        null,
+        null,
+        false,
+        null,
+        null
+      );
+      Alert.alert(`Unable to connect ${device.name}`, error.message, [
+        {
+          text: "Ok",
+          style: "cancel",
+        },
+        { text: "Try again", onPress: () => connectDevice(device, deviceCtx) },
+      ]);
+    } else {
+      Alert.alert(`Unable to connect ${device.name}`, error.message, [
+        {
+          text: "Ok",
+          style: "cancel",
+        },
+      ]);
+    }
+
+    return { connected: false, error };
   }
 };
 

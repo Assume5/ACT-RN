@@ -12,13 +12,14 @@ export type IDevice = {
   isNotifiable: boolean;
   notifyUUID: string | null;
   notifyServiceUUID: string | null;
+  monitoring: boolean;
 };
 
 export type IDeviceCtx = {
   devices: IDevice[];
   disconnect: (device: Device) => void;
   connect: (
-    device: Device | null,
+    device: Device,
     connected: boolean,
     isWriteable: boolean,
     writeUUID: string | null,
@@ -30,6 +31,7 @@ export type IDeviceCtx = {
     notifyUUID: string | null,
     notifyServiceUUID: string | null
   ) => void;
+  updateMonitoringState: (device: Device) => void;
 };
 
 export type IDevicesList = {

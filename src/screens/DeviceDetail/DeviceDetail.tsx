@@ -2,8 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Colors } from "../../theme/color";
 import CircleChart from "../../components/CircleChart/CircleChart";
-import { useIsFocused } from "@react-navigation/native";
-import BottomModal from "../../components/BottomSheet/BottomSheet";
 import { DeviceDataContext } from "../../context/DeviceDataContext";
 
 const DeviceDetail = () => {

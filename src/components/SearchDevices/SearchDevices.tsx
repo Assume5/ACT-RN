@@ -1,4 +1,10 @@
-import { Alert, PermissionsAndroid, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  PermissionsAndroid,
+  StyleSheet,
+  View,
+  Text,
+} from "react-native";
 import React, { useContext, useState } from "react";
 import { BleManager } from "react-native-ble-plx";
 import { DeviceContext } from "../../context/DevicesContext";
@@ -6,6 +12,7 @@ import { PERMISSIONS, requestMultiple } from "react-native-permissions";
 import { IDeviceCtx, IDevicesList } from "../../types/Device";
 import DevicesList from "./DevicesList";
 import ScanningButton from "./ScanningButton";
+import Loading from "../ui/Loading";
 
 const SearchDevices = () => {
   const bleManager = new BleManager();
@@ -35,7 +42,6 @@ const SearchDevices = () => {
       }
 
       if (err) {
-        console.log(err.errorCode);
         setScanning(false);
         setScanned(false);
         bleManager.stopDeviceScan();
@@ -75,7 +81,12 @@ const SearchDevices = () => {
   return (
     <View style={styles.container}>
       <ScanningButton scanning={scanning} scan={scan} scanned={scanned} />
-      <DevicesList deviceCtx={deviceCtx} devicesList={devices} />
+      {!Object.keys(devices).length && scanning && <Loading color="black" />}
+      <DevicesList
+        deviceCtx={deviceCtx}
+        devicesList={devices}
+        setDeviceList={setDevices}
+      />
     </View>
   );
 };

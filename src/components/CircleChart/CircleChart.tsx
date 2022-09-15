@@ -2,16 +2,11 @@ import {
   Animated,
   Easing,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import Svg, { Circle, CircleProps, G } from "react-native-svg";
-import { Colors } from "../../theme/color";
-import { useIsFocused } from "@react-navigation/native";
-
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const AnimatedInput = Animated.createAnimatedComponent(TextInput);
 
 interface Props {
@@ -29,7 +24,7 @@ const CircleChart: React.FC<Props> = ({
   radius = 60,
   strokeWidth = 10,
   duration = 1500,
-  color = Colors.ideal,
+  color,
   delay = 0,
   max = 100,
 }) => {

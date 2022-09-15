@@ -28,7 +28,6 @@ export const ConnectingLine = () => {
     animation(250);
     animated.addListener((v) => {
       if (lineRef?.current) {
-        // console.log(lineRef.current.props.y2);
         lineRef.current.setNativeProps({
           y2: v.value,
         });

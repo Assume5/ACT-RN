@@ -1,7 +1,7 @@
 import { Children, createContext, useState } from "react";
 import { Device } from "react-native-ble-plx";
 import { IDeviceData } from "../types";
-import { IDevice } from "../types/Device";
+import { IDevice, IDeviceCtx } from "../types/Device";
 
 export const DeviceContext = createContext({
   devices: [] as IDevice[],
@@ -19,7 +19,8 @@ export const DeviceContext = createContext({
     notifyUUID: string | null,
     notifyServiceUUID: string | null
   ) => {},
-});
+  updateMonitoringState: (device: Device) => {},
+} as IDeviceCtx);
 
 type Props = {
   children: JSX.Element;
@@ -41,9 +42,7 @@ export const DeviceContextProvider = ({ children }: Props) => {
     notifyUUID: string | null,
     notifyServiceUUID: string | null
   ) => {
-    console.log("Set Device: ", device.name);
     const index = devices.findIndex((item) => item.device.id === device.id);
-    console.log(index);
     if (index === -1) {
       setDevices([
         ...devices,
@@ -59,10 +58,11 @@ export const DeviceContextProvider = ({ children }: Props) => {
           writeServiceUUID,
           readServiceUUID,
           notifyServiceUUID,
+          monitoring: false,
         },
       ]);
     } else {
-      const temp = devices;
+      const temp = [...devices];
       temp[index] = {
         device,
         connected,
@@ -75,14 +75,22 @@ export const DeviceContextProvider = ({ children }: Props) => {
         writeServiceUUID,
         readServiceUUID,
         notifyServiceUUID,
+        monitoring: false,
       };
       setDevices(temp);
     }
   };
 
+  const updateMonitoringState = (device: Device) => {
+    const index = devices.findIndex((item) => item.device.id === device.id);
+    const temp = [...devices];
+    temp[index].monitoring = true;
+    setDevices(temp);
+  };
+
   const disconnect = (device: Device) => {};
 
-  const value = { devices, connect, disconnect };
+  const value = { devices, connect, disconnect, updateMonitoringState };
 
   return (
     <DeviceContext.Provider value={value}>{children}</DeviceContext.Provider>

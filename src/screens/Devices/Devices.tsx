@@ -7,6 +7,8 @@ import BottomSheet from "../../components/BottomSheet/BottomSheet";
 import { Colors } from "../../theme/color";
 import { DeviceContext } from "../../context/DevicesContext";
 import Icon from "../../components/ui/Icon";
+import { connectDevice } from "../../bluethooth/bluethooth";
+import { Device } from "react-native-ble-plx";
 const { width, height } = Dimensions.get("screen");
 
 const Devices = () => {
@@ -37,6 +39,8 @@ const Devices = () => {
     //fetching connected devices on db or local storage
   }, []);
 
+  const onDeviceClick = (device: Device) => {};
+
   return (
     <View
       style={[
@@ -47,12 +51,27 @@ const Devices = () => {
       {devicesCtx.devices.length > 0 &&
         devicesCtx.devices.map((device) => {
           return (
-            <View style={styles.deviceContainer} key={device.device.id}>
-              <Icon icon="phone-portrait" color="white" size={18} />
-              <Text style={styles.text}>{device.device.name}</Text>
-              <Text style={styles.text}>
-                {device.connected ? "Connected" : "Not Connect"}
-              </Text>
+            <View key={device.device.id} style={styles.deviceContainer}>
+              <Pressable
+                android_ripple={{ color: "white" }}
+                style={styles.pressContainer}
+                onPress={async () => {
+                  if (!device.connected) {
+                    await connectDevice(device.device, devicesCtx);
+                  } else {
+                    navigation.navigate(
+                      "ESP32" as never,
+                      { id: device.device.id } as never
+                    );
+                  }
+                }}
+              >
+                <Icon icon="phone-portrait" color="white" size={18} />
+                <Text style={styles.text}>{device.device.name}</Text>
+                <Text style={styles.text}>
+                  {device.connected ? "Connected" : "Not Connect"}
+                </Text>
+              </Pressable>
             </View>
           );
         })}
@@ -97,14 +116,17 @@ const styles = StyleSheet.create({
     color: "white",
   },
   deviceContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 15,
     borderWidth: 2,
     borderColor: "white",
     width: width - 15,
     borderRadius: 10,
     marginBottom: 15,
+    overflow: "hidden",
+  },
+  pressContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
   },
 });

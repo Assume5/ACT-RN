@@ -101,9 +101,7 @@ function Chart() {
     if (x >= xN) {
       x = xN;
     }
-
-    // console.log((x - x0) )
-
+    
     // The selected coordinate x :
     // (x - x0)/ xDistance = value
     let value = +((x - x0) / xDistance).toFixed(0);

@@ -38,7 +38,6 @@ const BottomSheet: React.FC<Props> = ({ children, show, setShow }) => {
         if (gestureState.dy > 0) setPositionY(gestureState.dy);
       },
       onPanResponderRelease: (e, gestureState) => {
-        console.log(positionY);
         if (gestureState.dy < 0) {
           setPositionY(0);
         } else {

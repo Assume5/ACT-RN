@@ -15,9 +15,9 @@ type Props = {
 };
 
 export const DeviceDataContextProvider = ({ children }: Props) => {
-  const [temperatureC, setTemperatureC] = useState(0);
-  const [temperatureF, setTemperatureF] = useState(0);
-  const [humidity, setHumidity] = useState(0);
+  const [temperatureC, setTemperatureC] = useState(-999);
+  const [temperatureF, setTemperatureF] = useState(-999);
+  const [humidity, setHumidity] = useState(-999);
 
   const updateTemperatureC = (temp: number) => {
     setTemperatureC(temp);
